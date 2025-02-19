@@ -528,7 +528,7 @@ html {
 # Contact
 --------------------------------------------------------------*/
 
-.contact__container {
+.footer__container {
   color: var(--color-text);
   margin-top: 120px;
   background-color: var(--color-secondary);
@@ -541,21 +541,21 @@ html {
   flex-wrap: wrap; /* Allows wrapping for smaller screens */
 }
 
-.contact__text h2 {
+.footer__text h2 {
   font-size: 80px;
   font-weight: 700;
   letter-spacing: 4px;
   text-align: center; /* Center text on smaller screens */
 }
 
-.contact__text p {
+.footer__text p {
   font-size: 40px;
   font-weight: 400;
   letter-spacing: 2px;
   text-align: center; /* Center text on smaller screens */
 }
 
-.contact__links {
+.footer__links {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -563,13 +563,13 @@ html {
   gap: 26px;
 }
 
-.contact__link {
+.footer__link {
   display: flex;
   align-items: center;
   gap: 25px;
 }
 
-.contact__link a {
+.footer__link a {
   color: var(--color-text);
   text-decoration: none;
   font-size: 30px;
@@ -579,52 +579,52 @@ html {
 
 /* Responsive styles */
 @media screen and (max-width: 1024px) {
-  .contact__container {
+  .footer__container {
     flex-direction: column;
     align-items: center;
     text-align: center;
     padding: 40px 5%;
   }
 
-  .contact__text h2 {
+  .footer__text h2 {
     font-size: 60px;
   }
 
-  .contact__text p {
+  .footer__text p {
     font-size: 30px;
   }
 
-  .contact__links {
+  .footer__links {
     align-items: center;
   }
 
-  .contact__link {
+  .footer__link {
     gap: 15px;
   }
 
-  .contact__link a {
+  .footer__link a {
     font-size: 24px;
   }
 }
 
 @media screen and (max-width: 1024px) {
-  .contact__container {
+  .footer__container {
     padding: 30px 5%;
   }
 
-  .contact__text h2 {
+  .footer__text h2 {
     font-size: 50px;
   }
 
-  .contact__text p {
+  .footer__text p {
     font-size: 24px;
   }
 
-  .contact__link {
+  .footer__link {
     gap: 10px;
   }
 
-  .contact__link a {
+  .footer__link a {
     font-size: 20px;
   }
 }
