@@ -8,7 +8,7 @@ function About() {
         <h2 className="about__title">About</h2>
         <div className="about__content">
         <img src={aboutIcon} className="about__img" alt="" />
-            <ul className="about__items"> I
+            <ul className="about__items"> 
                 <li className="about__item">
                     <img src={cursorIcon} alt="" />
                     <div>

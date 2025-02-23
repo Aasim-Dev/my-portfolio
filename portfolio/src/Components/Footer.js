@@ -13,11 +13,11 @@ function Footer() {
             <ul className="footer__links">
                 <li className="footer__link">
                     <img src={emailIcon} alt="" />
-                    <a href="mailto:sanandwalaaasim@outlook.com">sanandwalaaasim@outlook.com</a>
+                    <a href="mailto:sanandwalaaasim@outlook.com">Outlook/Aasim</a>
                 </li>
                 <li className="footer__link">
                     <img src={linkedinIcon} alt="" />
-                    <a href="https://www.linkedin.com/in/aasim-sanandwala-b09a29221">linkedin</a>
+                    <a href="https://www.linkedin.com/in/aasim-sanandwala-b09a29221">linkedin/Aasim</a>
                 </li>
                 <li className="footer__link">
                     <img src={githubIcon} alt="" />
