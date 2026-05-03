@@ -1,23 +1,29 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# Frontend (Create React App) — the root .gitignore covers most cases.
+# This file is a safety net for CRA-specific patterns.
 
-# dependencies
-/node_modules
+# Dependencies
+node_modules/
 /.pnp
 .pnp.js
 
-# testing
-/coverage
+# Production build
+/build/
 
-# production
-/build
+# Testing
+/coverage/
 
-# misc
-.DS_Store
+# Environment
+.env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+!.env.example
 
+# Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+# OS
+.DS_Store
