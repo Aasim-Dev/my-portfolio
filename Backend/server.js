@@ -17,24 +17,49 @@ app.use(express.json({ limit: "100kb" }));
 //   - exact origins:  https://example.com
 //   - regex patterns: /^https:\/\/.*\.vercel\.app$/  (wrap in slashes)
 // Defaults: localhost:3000 + any *.vercel.app subdomain.
+const DEFAULT_ORIGINS = "http://localhost:3000,/^https:\\/\\/.*\\.vercel\\.app$/";
+
+const cleanEntry = (raw) =>
+  raw
+    .trim()
+    .replace(/^["']|["']$/g, "") // strip stray surrounding quotes
+    .replace(/\/+$/, ""); // strip trailing slashes (browser Origins don't have them)
+
 const parseAllowedOrigins = (value) =>
-  (value || "http://localhost:3000,/^https:\\/\\/.*\\.vercel\\.app$/")
+  (value && value.trim() ? value : DEFAULT_ORIGINS)
     .split(",")
-    .map((o) => o.trim())
+    .map(cleanEntry)
     .filter(Boolean)
     .map((entry) => {
-      if (entry.startsWith("/") && entry.endsWith("/")) {
-        return new RegExp(entry.slice(1, -1));
+      if (entry.startsWith("/") && entry.endsWith("/") && entry.length > 1) {
+        try {
+          return new RegExp(entry.slice(1, -1));
+        } catch (e) {
+          console.warn(`[cors] invalid regex pattern, ignoring: ${entry}`);
+          return null;
+        }
       }
       return entry;
-    });
+    })
+    .filter(Boolean);
 
 const allowedOrigins = parseAllowedOrigins(process.env.CORS_ORIGINS);
 
-const isOriginAllowed = (origin) =>
-  allowedOrigins.some((rule) =>
-    rule instanceof RegExp ? rule.test(origin) : rule === origin
+console.log(
+  "[cors] Allowed origins loaded:",
+  allowedOrigins.map((r) => (r instanceof RegExp ? `/${r.source}/` : r))
+);
+console.log(
+  "[cors] Source:",
+  process.env.CORS_ORIGINS ? "env CORS_ORIGINS" : "default fallback"
+);
+
+const isOriginAllowed = (origin) => {
+  const normalized = origin.replace(/\/+$/, "");
+  return allowedOrigins.some((rule) =>
+    rule instanceof RegExp ? rule.test(normalized) : rule === normalized
   );
+};
 
 app.use(
   cors({
