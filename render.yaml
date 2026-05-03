@@ -1,0 +1,31 @@
+# Render blueprint — deploys the Backend service from this monorepo.
+# Docs: https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: portfolio-backend
+    runtime: node
+    plan: free
+    region: singapore
+    rootDir: Backend
+    buildCommand: npm ci
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      # Set these manually in the Render dashboard — they're secrets.
+      - key: mongo_url
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: CORS_ORIGINS
+        sync: false
+      - key: EMAIL_SERVICE
+        sync: false
+      - key: EMAIL_USER
+        sync: false
+      - key: EMAIL_PASS
+        sync: false
+      - key: OWNER_EMAIL
+        sync: false
+      - key: NODE_VERSION
+        value: "20"

@@ -13,19 +13,40 @@ app.set("trust proxy", 1);
 app.use(helmet());
 app.use(express.json({ limit: "100kb" }));
 
-const allowedOrigins = (process.env.CORS_ORIGINS || "http://localhost:3000")
-  .split(",")
-  .map((o) => o.trim())
-  .filter(Boolean);
+// CORS_ORIGINS supports two kinds of entries (comma-separated):
+//   - exact origins:  https://example.com
+//   - regex patterns: /^https:\/\/.*\.vercel\.app$/  (wrap in slashes)
+// Defaults: localhost:3000 + any *.vercel.app subdomain.
+const parseAllowedOrigins = (value) =>
+  (value || "http://localhost:3000,/^https:\\/\\/.*\\.vercel\\.app$/")
+    .split(",")
+    .map((o) => o.trim())
+    .filter(Boolean)
+    .map((entry) => {
+      if (entry.startsWith("/") && entry.endsWith("/")) {
+        return new RegExp(entry.slice(1, -1));
+      }
+      return entry;
+    });
+
+const allowedOrigins = parseAllowedOrigins(process.env.CORS_ORIGINS);
+
+const isOriginAllowed = (origin) =>
+  allowedOrigins.some((rule) =>
+    rule instanceof RegExp ? rule.test(origin) : rule === origin
+  );
 
 app.use(
   cors({
     origin: (origin, callback) => {
-      if (!origin || allowedOrigins.includes(origin)) {
-        return callback(null, true);
-      }
+      // No origin = same-origin request, server-to-server, or curl. Allow.
+      if (!origin) return callback(null, true);
+      if (isOriginAllowed(origin)) return callback(null, true);
+      console.warn(`[cors] blocked origin: ${origin}`);
       return callback(new Error("Not allowed by CORS"));
-    }
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"]
   })
 );
 
